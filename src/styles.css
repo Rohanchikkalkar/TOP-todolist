@@ -127,6 +127,13 @@ table {
  * This CSS code block resets the default styles of various HTML elements to ensure consistent rendering across different browsers.
  */
 
+body {
+  display: grid;
+  grid-template-rows: 10vh 90vh;
+  grid-template-columns: 20vw 80vw;
+  font-family: Poppins;
+}
+
 @font-face {
   font-family: "Poppins";
   src: url("./fonts/Poppins-Regular.ttf") format("ttf");
@@ -136,9 +143,31 @@ table {
 
 /* header */
 .header {
-  padding: 10px;
+  padding: 20px 10px 15px 30px;
+
   background-color: black;
+  grid-column: 1/3;
 }
 .logoImg {
   height: 3.5rem;
+}
+
+/* sidebar */
+.sidebar {
+  background-color: black;
+  color: white;
+  grid-row: 2/3;
+  padding: 10px 10px 10px 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sidebarTitle {
+  font-family: "Poppins";
+  padding: 5px;
+  font-size: 2rem;
+}
+
+.addProjectIcon {
+  height: 2.8rem;
 }
