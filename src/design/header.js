@@ -1,7 +1,7 @@
 import "../styles.css";
 import logoImg from "../images/Logo.png";
 
-const createHeader = () => {
+const renderHeader = () => {
   //create header todo
   const header = document.createElement("div");
   header.classList.add("header");
@@ -15,4 +15,4 @@ const createHeader = () => {
   header.appendChild(logo);
   document.body.appendChild(header);
 };
-export default createHeader;
+export default renderHeader;
