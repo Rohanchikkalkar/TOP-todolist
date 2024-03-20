@@ -2,7 +2,10 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: {
+    index: "./src/index.js",
+    sidebar: "./src/design/sidebar.js",
+  },
   mode: "development",
   devtool: "inline-source-map",
   devServer: {
