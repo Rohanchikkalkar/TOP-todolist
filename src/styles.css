@@ -175,10 +175,13 @@ body {
 /* main-container */
 
 .content-container {
+  background-color: #a78295;
+}
+.initialContent {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #a78295;
+  height: 90vh;
 }
 
 .welcome-content {
@@ -224,7 +227,8 @@ dialog {
   justify-content: space-between;
 }
 
-.deleteProjectIcon {
+.deleteProjectIcon,
+.deleteTaskImg {
   height: 2.5rem;
   padding-left: 10px;
   justify-self: end;
@@ -233,4 +237,38 @@ dialog {
 .projectName {
   font-size: 1.4rem;
   padding-top: 7px;
+}
+
+.projectContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.contentProjectTitle {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+.addTaskButton {
+  padding: 15px;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  background-color: #ffffff;
+}
+.task {
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+  color: black;
+  padding: 40px;
+  border-radius: 30px;
+  margin: 10px 30px 10px 30px;
+}
+.taskContainer {
+  height: 60vh;
+}
+
+.deleteTaskImg {
+  height: 2.5rem;
+  padding-left: 10px;
 }
