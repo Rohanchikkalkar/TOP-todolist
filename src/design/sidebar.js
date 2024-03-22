@@ -1,8 +1,11 @@
 import "../styles.css";
 import addProject from "../images/addIcon.png";
 import deleteProject from "../images/deleteIcon.png";
-import { showNewProjectDialog } from "./dialog";
+import { displayTasks, showNewProjectDialog } from "./dialog";
 import { projectView } from "./content";
+import { projectManager } from "../classes";
+
+// import { CURRENT_PROJECT } from "./dialog.js";
 
 // sidebar
 const sidebar = document.createElement("div");
@@ -52,10 +55,32 @@ export const createProjectCard = (project) => {
 
   // Add event listener to the project card
   projectNameElement.addEventListener("click", () => {
+    // const contentContainer = document.querySelector(".content-container");
+    // if (contentContainer) {
+    //   contentContainer.innerHTML = "";
+    //   projectView(project);
+    // }
+    // const contentContainer = document.querySelector(".content-container");
+    // if (contentContainer) {
+    //   contentContainer.innerHTML = "";
+    //   CURRENT_PROJECT = project;
+    //   if (CURRENT_PROJECT.todos && CURRENT_PROJECT.todos.length > 0) {
+    //     displayTasks(CURRENT_PROJECT.todos);
+    //   } else {
+    //     projectView(CURRENT_PROJECT);
+    //   }
+    // }
     const contentContainer = document.querySelector(".content-container");
     if (contentContainer) {
       contentContainer.innerHTML = "";
-      projectView(project);
+      const currentProject = projectManager.getCurrentProject();
+      if (currentProject.todos && currentProject.todos.length > 0) {
+        // contentContainer.innerHTML = "";
+        projectView(currentProject.projectName);
+        displayTasks(currentProject.todos);
+      } else {
+        projectView(currentProject.projectName);
+      }
     }
   });
 
@@ -68,10 +93,6 @@ export const createProjectCard = (project) => {
   });
 };
 
-// Example usage:
-// createProjectCard("Project 1");
-// createProjectCard("Project 2");
-// createProjectCard("Project 3");
 export const renderSidebar = () => {
   sidebarContainer();
 };

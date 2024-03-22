@@ -272,3 +272,15 @@ dialog {
   height: 2.5rem;
   padding-left: 10px;
 }
+.completed {
+  text-decoration: line-through;
+}
+.taskCheckbox {
+  transform: scale(2);
+  padding: 10px;
+}
+
+.check-delete {
+  display: flex;
+  gap: 20px;
+}

@@ -32,8 +32,27 @@ export class Tasks {
       day: "numeric",
     });
   }
+  markAsIncomplete() {
+    this.completed = false;
+  }
 
   markAsCompleted() {
     this.completed = true;
   }
 }
+//changes made now
+// projectManager.js
+export class ProjectManager {
+  constructor() {
+    this.currentProject = null;
+  }
+
+  setCurrentProject(project) {
+    this.currentProject = project;
+  }
+
+  getCurrentProject() {
+    return this.currentProject;
+  }
+}
+export const projectManager = new ProjectManager();

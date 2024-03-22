@@ -1,16 +1,16 @@
 import "../styles.css";
 import { Project, Tasks } from "../classes.js";
+import { projectManager } from "../classes.js";
 import { createProjectCard } from "./sidebar.js";
 import { projectView } from "./content.js";
 import deleteIcon from "../images/deleteIcon.png";
 let PROJECT_ID = 0;
-let CURRENT_PROJECT = null;
+// export let CURRENT_PROJECT = null;
 function showNewProjectDialog() {
   const dialog = document.createElement("dialog");
   dialog.setAttribute("id", "addNewProjectDialog");
 
   const form = document.createElement("form");
-
   const input = document.createElement("input");
   input.type = "text";
   input.name = "project-name";
@@ -29,8 +29,11 @@ function showNewProjectDialog() {
   submitButton.textContent = `Add Project`;
 
   submitButton.addEventListener("click", () => {
-    CURRENT_PROJECT = createProject(input, createProjectCard, dialog);
-    console.log(CURRENT_PROJECT);
+    // CURRENT_PROJECT = createProject(input, createProjectCard, dialog);
+    // console.log(CURRENT_PROJECT);
+    const newProject = createProject(input, createProjectCard, dialog);
+    projectManager.setCurrentProject(newProject);
+    console.log(projectManager.getCurrentProject());
   });
 
   function createProject(input, createProjectCard, dialog) {
@@ -102,12 +105,15 @@ function showNewTasksDialog() {
       taskDescriptionInput,
       taskDueDateInput,
       TASK_ID,
-
       dialog
     );
-    CURRENT_PROJECT.addTask(task);
-    console.log(CURRENT_PROJECT);
-    displayTasks(CURRENT_PROJECT);
+    // CURRENT_PROJECT.addTask(task);
+    // console.log(CURRENT_PROJECT);
+    // displayTasks(CURRENT_PROJECT);
+    const currentProject = projectManager.getCurrentProject();
+    currentProject.addTask(task);
+    console.log(currentProject);
+    displayTasks(currentProject);
   });
   function createTask(
     taskNameInput,
@@ -123,6 +129,7 @@ function showNewTasksDialog() {
 
     let task = new Tasks(taskName, taskDescription, taskDueDate);
     task.id = TASK_ID++;
+    //new code
 
     // Clear input fields
     taskNameInput.value = "";
@@ -132,49 +139,6 @@ function showNewTasksDialog() {
     dialog.close();
 
     return task;
-  }
-  function displayTasks(project) {
-    const taskContainer = document.createElement("div");
-    taskContainer.classList.add("taskContainer");
-    const container = document.querySelector(".content-container");
-
-    taskContainer.innerHTML = "";
-    container.innerHTML = ``;
-    projectView(project.projectName);
-
-    for (let task of project.todos) {
-      const taskElement = document.createElement("div");
-      taskElement.classList.add("task");
-      const taskContent = document.createElement("div");
-      taskContent.classList.add("taskContent");
-      const taskName = document.createElement("h2");
-      taskName.textContent = task.taskName;
-      taskContent.appendChild(taskName);
-
-      const taskDescription = document.createElement("p");
-      taskDescription.textContent = task.taskDescription;
-      taskContent.appendChild(taskDescription);
-
-      const taskDueDate = document.createElement("p");
-      taskDueDate.textContent = task.getFormattedDueDate();
-      taskContent.appendChild(taskDueDate);
-      taskElement.appendChild(taskContent);
-
-      const img = document.createElement("div");
-      const deleteTaskImg = document.createElement("img");
-      deleteTaskImg.src = deleteIcon;
-      deleteTaskImg.classList.add("deleteTaskImg");
-
-      deleteTaskImg.addEventListener("click", () => {
-        project.deleteTodo(task.id);
-        taskElement.remove(); // Remove the task element from the DOM
-      });
-      img.appendChild(deleteTaskImg);
-      taskElement.appendChild(img);
-
-      taskContainer.appendChild(taskElement);
-      container.appendChild(taskContainer);
-    }
   }
 
   form.appendChild(taskNameInput);
@@ -188,6 +152,69 @@ function showNewTasksDialog() {
   document.body.appendChild(dialog);
   dialog.showModal();
   return dialog;
+}
+
+export function displayTasks(project, taskContainer, container) {
+  const currentProject = projectManager.getCurrentProject();
+  const tasks = currentProject.getTodos();
+  taskContainer = document.createElement("div");
+  taskContainer.classList.add("taskContainer");
+  container = document.querySelector(".content-container");
+
+  taskContainer.innerHTML = "";
+  container.innerHTML = ``;
+  projectView(project.projectName);
+
+  for (let task of tasks) {
+    const taskElement = document.createElement("div");
+    taskElement.classList.add("task");
+    const taskContent = document.createElement("div");
+    taskContent.classList.add("taskContent");
+    const taskName = document.createElement("h2");
+    taskName.textContent = task.taskName;
+    taskContent.appendChild(taskName);
+
+    const taskDescription = document.createElement("p");
+    taskDescription.textContent = task.taskDescription;
+    taskContent.appendChild(taskDescription);
+
+    const taskDueDate = document.createElement("p");
+    taskDueDate.textContent = task.getFormattedDueDate();
+    taskContent.appendChild(taskDueDate);
+    taskElement.appendChild(taskContent);
+
+    const img = document.createElement("div");
+    img.classList.add("check-delete");
+    // Create a checkbox
+    const taskCheckbox = document.createElement("input");
+    taskCheckbox.type = "checkbox";
+    taskCheckbox.classList.add("taskCheckbox");
+    taskCheckbox.addEventListener("change", () => {
+      if (taskCheckbox.checked) {
+        task.markAsCompleted();
+        taskElement.classList.add("completed");
+      } else {
+        task.markAsIncomplete(); // You'll need to implement this method in your Todo class
+        taskElement.classList.remove("completed");
+      }
+    });
+
+    const deleteTaskImg = document.createElement("img");
+    deleteTaskImg.src = deleteIcon;
+    deleteTaskImg.classList.add("deleteTaskImg");
+
+    deleteTaskImg.addEventListener("click", () => {
+      const currentProject = projectManager.getCurrentProject();
+      currentProject.deleteTodo(task.id);
+      taskElement.remove(); // Remove the task element from the DOM
+    });
+    img.appendChild(taskCheckbox);
+    img.appendChild(deleteTaskImg);
+    taskElement.appendChild(img);
+
+    taskContainer.appendChild(taskElement);
+    container.appendChild(taskContainer);
+  }
 }
 
 export { showNewProjectDialog, showNewTasksDialog };
